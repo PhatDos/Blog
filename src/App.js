@@ -1,22 +1,40 @@
-import "./App.css";
-import TodoApp from "./TODO/index";
+import { Fragment } from "react";
 import { ThemeProvider } from "./ThemeContext.js";
-import { StoreProvider } from "./store";
-import Video from "./Video.js";
-import { useEffect, useRef } from "react";
-import Header from "./components/Heading";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { publicRoutes } from "~/routes";
+import { DefaultLayout } from "~/components/Layout";
+import "~/App.css";
 
 function App() {
-  const videoRef = useRef();
-  const handlePlay = () => {
-    videoRef.current.play();
-  };
-  const handlePause = () => {
-    videoRef.current.pause();
-  };
   return (
     <ThemeProvider>
-      <Header></Header>
+      <BrowserRouter>
+        <Routes>
+          {publicRoutes.map((route, i) => {
+            let Layout;
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            } else {
+              Layout = DefaultLayout;
+            }
+
+            const Page = route.component;
+            return (
+              <Route
+                key={i}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              ></Route>
+            );
+          })}
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
