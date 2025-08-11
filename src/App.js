@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { ThemeProvider } from "./ThemeContext.js";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "~/routes";
-import { DefaultLayout } from "~/components/Layout";
+import { DefaultLayout } from "~/components/Layouts/index.js";
 import "~/App.css";
 
 function App() {
@@ -27,7 +27,15 @@ function App() {
                 path={route.path}
                 element={
                   <Layout>
-                    <Page />
+                    <Page
+                      image="https://www.electric.ai/wp-content/uploads/BLOG-The-Top-IT-Blogs-You-Need-To-Know.png"
+                      title="Sim Data 4G Viettel Giá Rẻ SD70 30Gb/Tháng"
+                      price="170.000"
+                      oldPrice="250.000"
+                      sold="13"
+                      location="TP. Hồ Chí Minh"
+                      shipping="2 - 4 ngày"
+                    />
                   </Layout>
                 }
               ></Route>

@@ -1,0 +1,26 @@
+.wrapper{
+    background-color: #ffc200;
+    height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 1000; 
+}
+.container{
+    display: flex;
+}
+.left-header{
+    
+}
+.home-icon{
+    width: auto;
+    height: 75px;
+    margin-top: 5px;
+}
+.right-header{
+
+}
+.profile-icon{
+    height: 55px;
+    width: auto;
+    margin: 10px;
+}
