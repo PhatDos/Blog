@@ -11,12 +11,12 @@ function DefaultLayout({ children }) {
       <Header />
       <div className={`container-fluid ${cx("main")}`}>
         <div className="row">
-          <div className={`col-2 ${cx("sidebar-wrapper")}`}>
+          <div className={`col-3 ${cx("sidebar-wrapper")}`}>
             <aside className={cx("sidebar")}>
               <Sidebar />
             </aside>
           </div>
-          <main className={`col-10 ${cx("content")}`}>{children}</main>
+          <main className={`col-9 ${cx("content")}`}>{children}</main>
         </div>
       </div>
     </div>

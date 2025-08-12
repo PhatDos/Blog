@@ -1,25 +1,61 @@
+import { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Home({ image, title, price, oldPrice, sold, location, shipping }) {
+function Home({ data }) {
+  const blogs = data || []; // Use the passed data or an empty array if not provided
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 20;
+
+  // Tính vị trí bắt đầu và kết thúc của blogs hiển thị trên trang hiện tại
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  // Tổng số trang
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+
+  // Hàm chuyển trang
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <div className={cx("product-card")}>
-      <div className={cx("product-img")}>
-        <img src={image} alt={title} />
+    <div>
+      <div className={cx("blog-list")}>
+        {currentBlogs.map((blog, index) => (
+          <div key={index} className={cx("blog-post")}>
+            <div className={cx("post-image")}>
+              <img src={blog.image} alt={blog.title} />
+            </div>
+            <div className={cx("post-content")}>
+              <h2 className={cx("post-title")}>{blog.title}</h2>
+              <div className={cx("post-meta")}>
+                <span className={cx("author")}>By {blog.author}</span>
+                <span className={cx("date")}>{blog.date}</span>
+              </div>
+              <div className={cx("post-meta")}>
+                <span className={cx("read-time")}>{blog.readTime} đọc</span>
+              </div>
+              <p className={cx("summary")}>{blog.summary}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className={cx("product-info")}>
-        <h4 className={cx("product-title")}>{title}</h4>
-        <div className={cx("product-price")}>
-          <span className={cx("current-price")}>{price}₫</span>
-          {oldPrice && <span className={cx("old-price")}>{oldPrice}₫</span>}
-        </div>
-        <div className={cx("product-meta")}>
-          <span className={cx("sold")}>Đã bán {sold}</span>
-          <span className={cx("location")}>{location}</span>
-        </div>
-        <div className={cx("shipping")}>{shipping}</div>
+
+      {/* Pagination controls */}
+      <div className={cx("pagination")}>
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+          <button
+            key={pageNum}
+            onClick={() => handlePageChange(pageNum)}
+            className={cx("page-button", { active: currentPage === pageNum })}
+          >
+            {pageNum}
+          </button>
+        ))}
       </div>
     </div>
   );
