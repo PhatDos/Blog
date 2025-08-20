@@ -1,35 +1,3 @@
-.searchForm {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 6px 12px;
-  width: 100%;
-
-  .searchInput {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    padding: 6px;
-    background: transparent;
-  }
-
-  .searchButton {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 16px;
-    color: #666;
-
-    &:hover {
-      color: #000;
-    }
-  }
-}
-
-//Tippy
 .search-result {
   margin-top: 4px;
   background: #fff;
@@ -84,8 +52,4 @@
       }
     }
   }
-}
-.loadingIndicator {
-  margin-right: 8px; // khoảng cách với input
-  
 }

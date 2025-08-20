@@ -1,5 +1,5 @@
 .wrapper{
-    background-color: #ffc200;
+    background-color: #2f3232;
     height: 80px;
     position: sticky;
     top: 0;
@@ -16,11 +16,85 @@
     height: 75px;
     margin-top: 5px;
 }
-.right-header{
-
-}
 .profile-icon{
     height: 55px;
     width: auto;
     margin: 10px;
+}
+/* Header.module.scss */
+.col-1 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; // nếu muốn nút nằm sát phải
+  gap: 8px; // khoảng cách giữa avatar và nút
+}
+.right-header{
+    display: flex;
+    align-items: center;
+}
+.more-icon {
+    color: #fff;
+    font-size: 20px; // kích thước biểu tượng
+    cursor: pointer; // con trỏ khi hover
+    margin-left: 2rem;
+    padding: 4px 10px;
+    height: 28px;
+    width: auto;
+}
+
+//Tippy
+.search-result {
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 9999;
+
+  .search-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    .thumbnail {
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .info {
+      flex: 1;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+        color: #333;
+        line-height: 1.4;
+      }
+
+      p {
+        font-size: 12px;
+        color: #666;
+        margin: 2px 0 0;
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; // chỉ hiển thị 2 dòng
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
 }

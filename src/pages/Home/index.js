@@ -1,48 +1,92 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Home({ data }) {
-  const blogs = data || []; // Use the passed data or an empty array if not provided
-  const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 20;
+function Home() {
+  const [blogs, setBlogs] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // Tính vị trí bắt đầu và kết thúc của blogs hiển thị trên trang hiện tại
-  const indexOfLastBlog = currentPage * blogsPerPage;
-  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
-  // Tổng số trang
-  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  const navigate = useNavigate();
 
-  // Hàm chuyển trang
+  const blogsPerPage = 12;
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    setSearchParams({ page: pageNumber });
   };
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch(
+          `https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts?page=${currentPage}&limit=${blogsPerPage}`
+        );
+        if (!res.ok) throw new Error("Network response was not ok");
+
+        const json = await res.json();
+        const items = json?.data?.items || [];
+        const pages = json?.data?.pagination?.totalPages || 0;
+
+        setBlogs(items);
+        setTotalPages(pages);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+        setBlogs([]);
+        setTotalPages(0);
+      }
+    };
+    fetchBlogs();
+  }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(pageFromUrl);
+  }, [pageFromUrl]);
 
   return (
     <div>
       <div className={cx("blog-list")}>
-        {currentBlogs.map((blog, index) => (
-          <div key={index} className={cx("blog-post")}>
-            <div className={cx("post-image")}>
-              <img src={blog.image} alt={blog.title} />
-            </div>
-            <div className={cx("post-content")}>
-              <h2 className={cx("post-title")}>{blog.title}</h2>
-              <div className={cx("post-meta")}>
-                <span className={cx("author")}>By {blog.author}</span>
-                <span className={cx("date")}>{blog.date}</span>
+        {blogs.map((blog, index) => {
+          const date = blog.published_at || blog.created_at || "";
+          const formattedDate = date
+            ? new Date(date).toLocaleDateString("vi-VN")
+            : "";
+
+          return (
+            <div
+              key={blog.id || index}
+              className={cx("blog-post")}
+              onClick={() => navigate(`/upload/${blog.id}`)} // 👈 điều hướng khi click
+            >
+              <div className={cx("post-image")}>
+                {blog.thumbnail_url ? (
+                  <img src={blog.thumbnail_url} alt={blog.title} />
+                ) : (
+                  <div className={cx("no-image")}>No image</div>
+                )}
               </div>
-              <div className={cx("post-meta")}>
-                <span className={cx("read-time")}>{blog.readTime} đọc</span>
+              <div className={cx("post-content")}>
+                <h2 className={cx("post-title")}>{blog.title}</h2>
+                <div className={cx("post-meta")}>
+                  <span className={cx("author")}>
+                    By {blog.author || "Unknown"}
+                  </span>
+                  <span className={cx("date")}>{formattedDate}</span>
+                </div>
+                <div className={cx("post-meta")}>
+                  <span className={cx("read-time")}>{blog.readTime || ""}</span>
+                </div>
+                <p className={cx("summary")}>{blog.summary}</p>
               </div>
-              <p className={cx("summary")}>{blog.summary}</p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Pagination controls */}

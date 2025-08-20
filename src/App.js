@@ -5,8 +5,6 @@ import { publicRoutes } from "~/routes";
 import { DefaultLayout } from "~/components/Layouts/index.js";
 import "~/App.css";
 
-import blogs from "./data/blogs.js"; // Assuming you have a data file with blog posts
-
 function App() {
   return (
     <ThemeProvider>
@@ -27,11 +25,7 @@ function App() {
               <Route
                 key={i}
                 path={route.path}
-                element={
-                  <Layout>
-                    <Page data={blogs} />
-                  </Layout>
-                }
+                element={<Layout>{Page && <Page />}</Layout>}
               ></Route>
             );
           })}

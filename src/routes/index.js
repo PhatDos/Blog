@@ -1,8 +1,6 @@
 import Home from "~/pages/Home/index.js";
-import Profile from "~/pages/Profile/index.js";
-import Upload from "~/pages/Upload/index.js";
-import Search from "~/pages/Search/index.js";
-import { HeaderOnly } from "~/components/Layouts";
+import CreateEditBlogForm from "~/pages/CreateEditBlogForm";
+import { UploadLayout, DashboardLayout } from "~/components/Layouts";
 
 const publicRoutes = [
   {
@@ -10,18 +8,18 @@ const publicRoutes = [
     component: Home
   },
   {
-    path: "/profile",
-    component: Profile
+    path: "/upload", // create blog
+    component: CreateEditBlogForm,
+    layout: UploadLayout
   },
   {
-    path: "/upload",
-    component: Upload,
-    layout: HeaderOnly
+    path: "/upload/:id", // edit blog
+    component: CreateEditBlogForm,
+    layout: UploadLayout
   },
   {
-    path: "/search",
-    component: Search,
-    layout: null
+    path: "/dashboard/*",
+    layout: DashboardLayout
   }
 ];
 const privateRoutes = [];

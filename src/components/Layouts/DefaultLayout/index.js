@@ -1,4 +1,5 @@
 import Header from "~/components/Layouts/components/Header";
+import Footer from "~/components/Layouts/components/Footer";
 import Sidebar from "./Sidebar";
 import classNames from "classnames/bind";
 import styles from "./DefaultLayout.module.scss";
@@ -19,6 +20,7 @@ function DefaultLayout({ children }) {
           <main className={`col-9 ${cx("content")}`}>{children}</main>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
