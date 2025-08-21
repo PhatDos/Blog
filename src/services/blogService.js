@@ -32,7 +32,7 @@ const blogService = {
 
   async updateBlog(id, data) {
     const res = await fetch(`${API_URL}/${id}`, {
-      method: "PATCH", // hoặc PUT tùy backend
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });

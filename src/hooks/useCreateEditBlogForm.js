@@ -103,15 +103,26 @@ function useCreateEditBlogForm(onSuccess) {
 
       let data;
       if (id) {
-        data = await updateBlog(id, formDataObj);
+        if (file) {
+          // Nếu có file thì gửi FormData
+          data = await updateBlog(id, formDataObj);
+        } else {
+          // Nếu không có file thì gửi JSON
+          data = await updateBlog(id, formData);
+        }
         alert("Blog updated successfully!");
       } else {
-        data = await createBlog(formDataObj);
+        if (file) {
+          data = await createBlog(formDataObj);
+        } else {
+          data = await createBlog(formData);
+        }
         alert("Blog created successfully!");
       }
+      console.log("Submit data:", [...formDataObj.entries()]);
 
       if (onSuccess) onSuccess(data);
-      navigate("/");
+      //navigate("/");
     } catch (err) {
       alert(err.message);
     } finally {
