@@ -1,6 +1,13 @@
 const API_URL = "https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts";
 
-export const blogService = {
+const blogService = {
+  async getBlogById(id) {
+    const res = await fetch(`${API_URL}/${id}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch blog");
+    return data.data;
+  },
+
   async getBlogs(page = 1, limit = 10) {
     const res = await fetch(`${API_URL}?page=${page}&limit=${limit}`);
     if (!res.ok) throw new Error("Failed to fetch blogs");
@@ -33,3 +40,5 @@ export const blogService = {
     return res.json();
   }
 };
+
+export default blogService;

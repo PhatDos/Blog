@@ -1,5 +1,5 @@
 // services/searchService.js
-export async function searchPosts(query, signal) {
+async function searchPosts(query, signal) {
   const res = await fetch(
     `https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts/search?params=${encodeURIComponent(
       query
@@ -13,3 +13,4 @@ export async function searchPosts(query, signal) {
 
   return res.json();
 }
+export default searchPosts;

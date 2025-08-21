@@ -1,58 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./blogsTable.scss";
+import { useBlogs } from "~/hooks/useBlogs";
 
 const BlogsTable = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { blogs, loading, deleteBlog } = useBlogs(1, 30);
   const navigate = useNavigate();
 
   //Go to top
   const [goToTop, setGoToTop] = useState(false);
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      setGoToTop(window.scrollY > 400);
-    });
-  }, []);
-
-  // fetch blogs
-  const fetchBlogs = async () => {
-    try {
-      const res = await fetch(
-        "https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts?page=1&limit=30"
-      );
-      if (!res.ok) throw new Error("Failed to fetch blogs");
-      const data = await res.json();
-      setBlogs(data.data.items);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBlogs();
+    const handleScroll = () => setGoToTop(window.scrollY > 400);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
-      try {
-        const res = await fetch(
-          `https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts/${id}`,
-          { method: "DELETE" }
-        );
-        if (!res.ok) throw new Error("Delete failed");
-        setBlogs((prev) => prev.filter((b) => b.id !== id));
-        alert("Blog deleted successfully!!!");
-      } catch (error) {
-        console.error("Error:", error);
-      }
+      await deleteBlog(id);
+      alert("Blog deleted successfully!!!");
     }
   };
 
   const handleEdit = (id) => {
-    navigate(`/upload/${id}`); // 👉 chuyển sang trang edit
+    navigate(`/upload/${id}`);
   };
 
   if (loading) return <p>Loading blogs...</p>;
@@ -99,12 +70,13 @@ const BlogsTable = () => {
           ))}
         </tbody>
       </table>
+
       {goToTop && (
         <button
           className="go-to-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <img src="https://www.pngkey.com/png/detail/355-3553692_jump-to-the-top-scroll-to-top-icon.png"></img>
+          <img src="https://www.pngkey.com/png/detail/355-3553692_jump-to-the-top-scroll-to-top-icon.png" />
         </button>
       )}
     </div>

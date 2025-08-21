@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { searchPosts } from "../services/searchService";
+import searchPosts from "../services/searchService";
 
 export default function useSearch() {
   const [query, setQuery] = useState("");
