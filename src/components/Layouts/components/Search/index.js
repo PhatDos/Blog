@@ -9,8 +9,8 @@ import TippySearch from "~/components/Layouts/components/Tippy/TippySearch";
 const cx = classNames.bind(styles);
 
 function Search() {
-  const formRef = useRef();
   const navigate = useNavigate();
+  const formRef = useRef();
   const [formWidth, setFormWidth] = useState();
 
   const { query, setQuery, searchResults, setSearchResults, loading } =
@@ -20,7 +20,7 @@ function Search() {
     const updateWidth = () => {
       setFormWidth(formRef.current?.offsetWidth);
     };
-    updateWidth();
+    updateWidth(); //chay lan dau
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
   }, []);

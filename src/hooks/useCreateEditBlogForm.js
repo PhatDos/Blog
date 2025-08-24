@@ -40,7 +40,7 @@ function useCreateEditBlogForm(onSuccess) {
     })();
   }, [id]);
 
-  // cleanup preview
+  // cleanup preview pic
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -122,7 +122,7 @@ function useCreateEditBlogForm(onSuccess) {
       console.log("Submit data:", [...formDataObj.entries()]);
 
       if (onSuccess) onSuccess(data);
-      //navigate("/");
+      navigate("/");
     } catch (err) {
       alert(err.message);
     } finally {

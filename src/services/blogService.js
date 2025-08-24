@@ -1,4 +1,5 @@
 const API_URL = "https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts";
+const API_URL_V2 = "https://backend-quiz-627bed8ec3c5.herokuapp.com/v2/posts"; //for file upload
 
 const blogService = {
   async getBlogById(id) {
@@ -21,21 +22,38 @@ const blogService = {
   },
 
   async createBlog(data) {
-    const res = await fetch(API_URL, {
+    const hasFile = data instanceof FormData;
+    const url = hasFile ? API_URL_V2 : API_URL;
+
+    const options = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+      body: hasFile ? data : JSON.stringify(data)
+    };
+
+    if (!hasFile) {
+      options.headers = { "Content-Type": "application/json" };
+    }
+
+    const res = await fetch(url, options);
     if (!res.ok) throw new Error("Failed to create blog");
     return res.json();
   },
 
   async updateBlog(id, data) {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const hasFile = data instanceof FormData;
+
+    const url = hasFile ? `${API_URL_V2}/${id}` : `${API_URL}/${id}`;
+
+    const options = {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+      body: hasFile ? data : JSON.stringify(data)
+    };
+
+    if (!hasFile) {
+      options.headers = { "Content-Type": "application/json" };
+    }
+
+    const res = await fetch(url, options);
     if (!res.ok) throw new Error("Failed to update blog");
     return res.json();
   }

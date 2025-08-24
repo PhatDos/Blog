@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import searchPosts from "../services/searchService";
+import searchService from "../services/searchService";
 
-export default function useSearch() {
+function useSearch() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export default function useSearch() {
 
     setLoading(true);
 
-    searchPosts(query, controllerRef.current.signal)
+    searchService(query, controllerRef.current.signal)
       .then((data) => {
         setSearchResults(data?.data?.items || []);
         setLoading(false);
@@ -36,3 +36,5 @@ export default function useSearch() {
 
   return { query, setQuery, searchResults, setSearchResults, loading };
 }
+
+export default useSearch;
