@@ -9,6 +9,7 @@ function TippySearch({ children, results, onSelect, width }) {
     <Tippy
       placement="bottom-start"
       visible={results.length > 0}
+      offset={[0, 2]}
       interactive={true}
       render={(attrs) => (
         <div
