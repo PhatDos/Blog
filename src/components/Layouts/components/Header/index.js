@@ -1,12 +1,13 @@
 import classNames from "classnames/bind";
-import Tippy from "@tippyjs/react/headless";
+import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircle,
   faCircleQuestion,
   faEarthAsia,
   faEllipsisVertical,
-  faKeyboard
+  faUpload,
+  faCloudUpload,
+  faMessage
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.scss";
 import Search from "../Search";
@@ -19,25 +20,40 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faEarthAsia} />,
       title: "English",
-      children: {}
+      children: {
+        title: "Language",
+        data: [
+          {
+            code: "en",
+            title: "English"
+          },
+          { code: "vi", title: "Tiếng Việt" }
+        ]
+      }
     },
     {
       icon: <FontAwesomeIcon icon={faCircleQuestion} />,
       title: "Feedback and help",
-      to: "/feedback",
-      children: {}
+      to: "/feedback"
     },
     {
-      icon: <FontAwesomeIcon icon={faKeyboard} />,
-      title: "Keyboard shortcuts",
-      children: {}
+      icon: <FontAwesomeIcon icon={faUpload} />,
+      title: "Upload",
+      to: "/upload"
     }
   ];
-  const handleSelect = () => {};
+
+  const handleMenuChange = (menuItem) => {
+    console.log(menuItem);
+  };
+
+  let currentUSer = false;
+
   return (
     <header className={cx("wrapper")}>
       <div className="container">
         <div className="row align-items-center">
+          {/* Left header */}
           <a href="/" className={`col-2 ${cx("left-header")}`}>
             <img
               className={cx("home-icon")}
@@ -45,25 +61,50 @@ function Header() {
               alt="Home"
             />
           </a>
+          {/* Searchbar */}
           <div className="col-8">
             <Search />
           </div>
-          <div className="col-1"></div>
-          <div className={`col-1 ${cx("right-header")}`}>
-            <a href="/upload">
-              <img
-                className={cx("profile-icon")}
-                src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
-                alt="Profile"
-              />
-            </a>
-            {/* More-btn */}
-            <TippyMoreBtn moreItems={moreItems} onSelect={handleSelect}>
-              <FontAwesomeIcon
-                className={cx("more-icon")}
-                icon={faEllipsisVertical}
-              />
-            </TippyMoreBtn>
+          {/* Right header */}
+          <div className={`col-2 ${cx("right-header")}`}>
+            {currentUSer ? ( //Đã login
+              <>
+                {/* Avatar */}
+                <a href="/upload">
+                  <img
+                    className={cx("profile-icon")}
+                    src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
+                    alt="Profile"
+                  />
+                </a>
+                {/* More-btn */}
+                <TippyMoreBtn moreItems={moreItems} onChange={handleMenuChange}>
+                  <FontAwesomeIcon
+                    className={cx("more-icon")}
+                    icon={faEllipsisVertical}
+                  />
+                </TippyMoreBtn>
+              </>
+            ) : (
+              //Chưa login
+              <>
+                <Tippy content="Upload blog" placement="bottom">
+                  <button className={cx("header-btn")}>
+                    <FontAwesomeIcon icon={faCloudUpload} />
+                  </button>
+                </Tippy>
+                <button className={cx("header-btn")}>
+                  <FontAwesomeIcon icon={faMessage} />
+                </button>
+                {/* More-btn */}
+                <TippyMoreBtn moreItems={moreItems} onChange={handleMenuChange}>
+                  <FontAwesomeIcon
+                    className={cx("more-icon")}
+                    icon={faEllipsisVertical}
+                  />
+                </TippyMoreBtn>
+              </>
+            )}
           </div>
         </div>
       </div>
