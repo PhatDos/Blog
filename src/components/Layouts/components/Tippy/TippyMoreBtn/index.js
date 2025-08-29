@@ -18,14 +18,18 @@ function TippySearch({ children, moreItems, onChange = () => {} }) {
       const isParent = !!item.children;
 
       return item.to ? (
-        <a key={item.title} className={cx("menu-item")} href={item.to}>
+        <a
+          key={item.title}
+          className={cx("menu-item", { separate: item.separate })}
+          href={item.to}
+        >
           {item.icon}
           <span>{item.title}</span>
         </a>
       ) : (
         <div
           key={item.title}
-          className={cx("menu-item")}
+          className={cx("menu-item", { separate: item.separate })}
           onClick={() => {
             if (isParent) {
               setHistory((prev) => [...prev, item.children]);
@@ -44,8 +48,9 @@ function TippySearch({ children, moreItems, onChange = () => {} }) {
   return (
     <Tippy
       placement="bottom-start"
-      delay={[0, 500]}
-      offset={[0, 10]}
+      //visible={true}
+      delay={[0, 400]}
+      offset={[11, 10]}
       interactive={true}
       onHidden={() => setHistory((prev) => prev.slice(0, 1))}
       render={(attrs) => (

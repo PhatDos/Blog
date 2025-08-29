@@ -1,26 +1,23 @@
-.wrapper{
-    background-color: #2f3232;
-    height: 80px;
-    position: sticky;
-    top: 0;
-    z-index: 1000; 
+.wrapper {
+  background-color: #2f3232;
+  height: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
-.container{
-    display: flex;
+
+.container {
+  display: flex;
 }
-.left-header{
-    
+
+.left-header {}
+
+.home-icon {
+  width: auto;
+  height: 75px;
+  margin-top: 5px;
 }
-.home-icon{
-    width: auto;
-    height: 75px;
-    margin-top: 5px;
-}
-.profile-icon{
-    height: 55px;
-    width: auto;
-    margin: 10px;
-}
+
 /* Header.module.scss */
 .col-1 {
   display: flex;
@@ -28,27 +25,38 @@
   justify-content: flex-end; // nếu muốn nút nằm sát phải
   gap: 8px; // khoảng cách giữa avatar và nút
 }
-.right-header{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;  //thay cho margin-left
 
-    .header-btn{
-      background: transparent;
-      color: #f5f5f5;
-      border: none;
-      font-size: 3.1rem ;
-      margin-left: 20px;
-    }
-}
-.more-icon {
+.right-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; //thay cho margin-left
+  gap: 12px;
+
+  .header-btn {
+    background: transparent;
+    color: #f5f5f5;
+    border: none;
+    font-size: 3.1rem;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+
+  .profile-icon {
+    height: 48px;
+    width: auto;
+    margin: 10px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .more-icon {
     color: #fff;
-    font-size: 20px; // kích thước biểu tượng
     cursor: pointer; // con trỏ khi hover
     margin-left: 2rem;
     padding: 4px 10px;
-    height: 28px;
+    height: 33px; //size icon
     width: auto;
+  }
 }
 
 //Tippy

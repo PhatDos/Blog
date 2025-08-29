@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css"; // optional
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleQuestion,
@@ -7,7 +8,9 @@ import {
   faEllipsisVertical,
   faUpload,
   faCloudUpload,
-  faMessage
+  faMessage,
+  faGear,
+  faSignOut
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.scss";
 import Search from "../Search";
@@ -43,6 +46,26 @@ function Header() {
     }
   ];
 
+  const userMenu = [
+    ...moreItems,
+    {
+      icon: <FontAwesomeIcon icon={faMessage} />,
+      title: "Messages",
+      to: "/messages"
+    },
+    {
+      icon: <FontAwesomeIcon icon={faGear} />,
+      title: "Settings",
+      to: "/settings"
+    },
+    {
+      icon: <FontAwesomeIcon icon={faSignOut} />,
+      title: "Log out",
+      to: "/logout",
+      separate: true
+    }
+  ];
+
   const handleMenuChange = (menuItem) => {
     console.log(menuItem);
   };
@@ -61,10 +84,14 @@ function Header() {
               alt="Home"
             />
           </a>
+
           {/* Searchbar */}
-          <div className="col-8">
+          <div className="col-1"></div>
+          <div className="col-6">
             <Search />
           </div>
+          <div className="col-1"></div>
+
           {/* Right header */}
           <div className={`col-2 ${cx("right-header")}`}>
             {currentUSer ? ( //Đã login
@@ -88,16 +115,20 @@ function Header() {
             ) : (
               //Chưa login
               <>
-                <Tippy content="Upload blog" placement="bottom">
+                {/* Upload */}
+                <Tippy offset={[0, 0]} content="Upload blog" placement="bottom">
                   <button className={cx("header-btn")}>
                     <FontAwesomeIcon icon={faCloudUpload} />
                   </button>
                 </Tippy>
-                <button className={cx("header-btn")}>
-                  <FontAwesomeIcon icon={faMessage} />
-                </button>
+                {/* Message */}
+                <Tippy offset={[0, 1]} content="Message" placement="bottom">
+                  <button className={cx("header-btn")}>
+                    <FontAwesomeIcon icon={faMessage} />
+                  </button>
+                </Tippy>
                 {/* More-btn */}
-                <TippyMoreBtn moreItems={moreItems} onChange={handleMenuChange}>
+                <TippyMoreBtn moreItems={userMenu} onChange={handleMenuChange}>
                   <FontAwesomeIcon
                     className={cx("more-icon")}
                     icon={faEllipsisVertical}
