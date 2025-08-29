@@ -6,7 +6,6 @@ import {
   faCircleQuestion,
   faEarthAsia,
   faEllipsisVertical,
-  faUpload,
   faCloudUpload,
   faMessage,
   faGear,
@@ -15,6 +14,7 @@ import {
 import styles from "./Header.module.scss";
 import Search from "../Search";
 import TippyMoreBtn from "../Tippy/TippyMoreBtn";
+import Image from "../Image";
 
 const cx = classNames.bind(styles);
 
@@ -40,7 +40,7 @@ function Header() {
       to: "/feedback"
     },
     {
-      icon: <FontAwesomeIcon icon={faUpload} />,
+      icon: <FontAwesomeIcon icon={faCloudUpload} />,
       title: "Upload",
       to: "/upload"
     }
@@ -94,14 +94,15 @@ function Header() {
 
           {/* Right header */}
           <div className={`col-2 ${cx("right-header")}`}>
-            {currentUSer ? ( //Đã login
+            {!currentUSer ? ( //Đã login
               <>
                 {/* Avatar */}
                 <a href="/upload">
-                  <img
+                  <Image
                     className={cx("profile-icon")}
                     src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
                     alt="Profile"
+                    //fallback=""   nếu ảnh lỗi thì thay bằng ảnh này
                   />
                 </a>
                 {/* More-btn */}
