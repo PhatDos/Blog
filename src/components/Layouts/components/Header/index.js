@@ -94,7 +94,7 @@ function Header() {
 
           {/* Right header */}
           <div className={`col-2 ${cx("right-header")}`}>
-            {!currentUSer ? ( //Đã login
+            {currentUSer ? ( //Đã login
               <>
                 {/* Avatar */}
                 <a href="/upload">
