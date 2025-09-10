@@ -76,7 +76,10 @@ const BlogsTable = () => {
           className="go-to-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <img src="https://www.pngkey.com/png/detail/355-3553692_jump-to-the-top-scroll-to-top-icon.png" />
+          <img
+            src="https://www.pngkey.com/png/detail/355-3553692_jump-to-the-top-scroll-to-top-icon.png"
+            alt="▲"
+          />
         </button>
       )}
     </div>

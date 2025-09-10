@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./Search.module.scss";
 import useSearch from "~/hooks/useSearch";
@@ -10,11 +12,21 @@ const cx = classNames.bind(styles);
 
 function Search() {
   const navigate = useNavigate();
+
   const formRef = useRef();
+  const searchRef = useRef();
+
   const [formWidth, setFormWidth] = useState();
 
-  const { query, setQuery, searchResults, setSearchResults, loading } =
-    useSearch();
+  const {
+    query,
+    setQuery,
+    searchResults,
+    setSearchResults,
+    loading,
+    showResult,
+    setShowResult
+  } = useSearch();
 
   useEffect(() => {
     const updateWidth = () => {
@@ -23,7 +35,7 @@ function Search() {
     updateWidth(); //chay lan dau
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
-  }, []);
+  }, []); //Set width of search
 
   const handleSelect = (id) => {
     navigate(`/upload/${id}`);
@@ -31,11 +43,23 @@ function Search() {
     setSearchResults([]);
   };
 
+  const handleClear = () => {
+    setQuery("");
+    setSearchResults([]);
+    searchRef.current.focus();
+  };
+
+  const handleHideResult = () => {
+    setShowResult(false);
+  };
+
   return (
     <TippySearch
       results={searchResults}
       onSelect={handleSelect}
       width={formWidth}
+      onClickOutside={handleHideResult}
+      visible={showResult && searchResults.length > 0}
     >
       <form
         className={cx("searchForm")}
@@ -43,23 +67,32 @@ function Search() {
         onSubmit={(e) => e.preventDefault()}
       >
         <input
+          value={query}
+          ref={searchRef}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => setShowResult(true)}
           type="text"
           placeholder="Search..."
           name="search"
           className={cx("searchInput")}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          spellCheck={false}
         />
         {loading && (
-          <i
-            className={cx(
-              "loadingIndicator",
-              "fa-solid",
-              "fa-spinner",
-              "fa-spin"
-            )}
-          ></i>
+          <FontAwesomeIcon
+            icon={faSpinner}
+            spin
+            className={cx("loadingIndicator")}
+          />
         )}
+
+        {!!query && !loading && (
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            className={cx("clearButton")}
+            onClick={handleClear}
+          />
+        )}
+
         <button type="submit" className={cx("searchButton")}>
           <i className="fa fa-search"></i>
         </button>

@@ -1,15 +1,17 @@
+import request from "~/utils/request";
+
 async function searchService(query, signal) {
-  const res = await fetch(
-    `https://backend-quiz-627bed8ec3c5.herokuapp.com/v1/posts/search?params=${encodeURIComponent(
-      query
-    )}`,
-    { signal }
-  );
+  try {
+    const res = await request.get("/posts/search", {
+      params: { params: query },
+      signal
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch search results");
+    return res.data;
+  } catch (err) {
+    console.error("Failed to fetch search results", err);
+    throw err;
   }
-
-  return res.json();
 }
+
 export default searchService;

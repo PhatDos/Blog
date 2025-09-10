@@ -126,6 +126,7 @@ function Header() {
                 <Tippy offset={[0, 1]} content="Message" placement="bottom">
                   <button className={cx("header-btn")}>
                     <FontAwesomeIcon icon={faMessage} />
+                    <span className={cx("badge")}>3</span>
                   </button>
                 </Tippy>
                 {/* More-btn */}

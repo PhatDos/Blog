@@ -16,15 +16,29 @@
     background: transparent;
   }
 
+  .searchInput:not(:placeholder-shown)~.searchButton {
+    color: #000;
+  }
+
   .searchButton {
     border: none;
     background: transparent;
     cursor: pointer;
     font-size: 16px;
     color: #666;
+  }
+
+  .loadingIndicator {
+    margin-right: 9px; // overide clear button
+  }
+
+  .clearButton {
+    position: absolute;
+    opacity: 0.7;
+    left: 66%;
 
     &:hover {
-      color: #000;
+      cursor: pointer;
     }
   }
 }
@@ -39,6 +53,7 @@
   max-height: 300px;
   overflow-y: auto;
   z-index: 9999;
+  position: relative;
 
   .search-item {
     display: flex;
@@ -84,8 +99,4 @@
       }
     }
   }
-}
-.loadingIndicator {
-  margin-right: 8px; // khoảng cách với input
-  
 }

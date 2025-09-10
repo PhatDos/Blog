@@ -1,27 +1,28 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import searchService from "../services/searchService";
+
+import useDebounce from "./useDebounce";
 
 function useSearch() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const controllerRef = useRef(null);
+  const [showResult, setShowResult] = useState(true);
+  const debouncedQuery = useDebounce(query, 500);
 
   useEffect(() => {
-    if (!query.trim()) {
+    if (!debouncedQuery.trim()) {
       setSearchResults([]);
       setLoading(false);
       return;
     }
 
-    controllerRef.current?.abort();
-    controllerRef.current = new AbortController();
-
+    const controller = new AbortController();
     setLoading(true);
 
-    searchService(query, controllerRef.current.signal)
-      .then((data) => {
-        setSearchResults(data?.data?.items || []);
+    searchService(debouncedQuery, controller.signal)
+      .then((res) => {
+        setSearchResults(res.data.items);
         setLoading(false);
       })
       .catch((err) => {
@@ -31,10 +32,18 @@ function useSearch() {
         }
       });
 
-    return () => controllerRef.current?.abort();
-  }, [query]);
+    return () => controller.abort(); // hủy request cũ khi query đổi
+  }, [debouncedQuery]);
 
-  return { query, setQuery, searchResults, setSearchResults, loading };
+  return {
+    query,
+    setQuery,
+    searchResults,
+    setSearchResults,
+    loading,
+    showResult,
+    setShowResult
+  };
 }
 
 export default useSearch;

@@ -4,13 +4,21 @@ import styles from "./TippySearch.module.scss";
 
 const cx = classNames.bind(styles);
 
-function TippySearch({ children, results, onSelect, width }) {
+function TippySearch({
+  children,
+  results,
+  onSelect,
+  width,
+  visible,
+  onClickOutside
+}) {
   return (
     <Tippy
       placement="bottom-start"
-      visible={results.length > 0}
+      visible={visible}
       offset={[0, 2]}
       interactive={true}
+      onClickOutside={onClickOutside}
       render={(attrs) => (
         <div
           className={cx("search-result")}
