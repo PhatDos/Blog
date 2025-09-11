@@ -12,9 +12,8 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
   const navigate = useNavigate();
-  const blogsPerPage = 12;
 
-  const { blogs, totalPages, loading } = useBlogs(currentPage, blogsPerPage);
+  const { blogs, totalPages, loading } = useBlogs(currentPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);

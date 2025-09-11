@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import blogService from "~/services/blogService";
+import blogService from "~/apiServices/blogService";
 
-export function useBlogs(page = 1, limit = 10) {
+export function useBlogs(page = 1, limit = 12) {
   const [blogs, setBlogs] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // fetch blogs
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const json = await blogService.getBlogs(page, limit);
-        setBlogs(json?.data?.items || []);
+        const res = await blogService.getBlogs(page, limit);
+        setBlogs(res?.data?.items || []);
+        setTotalPages(res?.data?.pagination?.totalPages || 1);
       } catch (err) {
         console.error("Error fetching blogs:", err);
         setError(err);
@@ -23,7 +24,6 @@ export function useBlogs(page = 1, limit = 10) {
     fetchBlogs();
   }, [page, limit]);
 
-  // delete blog
   const deleteBlog = async (id) => {
     try {
       await blogService.deleteBlog(id);
@@ -34,5 +34,5 @@ export function useBlogs(page = 1, limit = 10) {
     }
   };
 
-  return { blogs, setBlogs, loading, error, deleteBlog };
+  return { blogs, setBlogs, totalPages, loading, error, deleteBlog };
 }

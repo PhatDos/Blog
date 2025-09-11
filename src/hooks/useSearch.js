@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import searchService from "../services/searchService";
+import searchService from "../apiServices/searchService";
 
 import useDebounce from "./useDebounce";
 
@@ -20,17 +20,13 @@ function useSearch() {
     const controller = new AbortController();
     setLoading(true);
 
-    searchService(debouncedQuery, controller.signal)
-      .then((res) => {
-        setSearchResults(res.data.items);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name !== "AbortError") {
-          console.error(err);
-          setLoading(false);
-        }
-      });
+    const fetchAPI = async () => {
+      const res = await searchService(debouncedQuery, controller.signal);
+      if (res) setSearchResults(res.items);
+      setLoading(false);
+    };
+
+    fetchAPI();
 
     return () => controller.abort(); // hủy request cũ khi query đổi
   }, [debouncedQuery]);

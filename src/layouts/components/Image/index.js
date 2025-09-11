@@ -12,7 +12,7 @@ const Image = ({
     <img
       src={fallback || src}
       {...props}
-      alt="No Image"
+      alt="NoImg"
       onError={() => setFallback(customFallback)}
     />
   );

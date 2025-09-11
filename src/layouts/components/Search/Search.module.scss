@@ -7,6 +7,10 @@
   padding: 6px 12px;
   width: 100%;
 
+  &:focus-within {
+    border: #3e3b3b 3px solid;
+  }
+
   .searchInput {
     flex: 1;
     border: none;

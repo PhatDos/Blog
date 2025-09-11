@@ -11,7 +11,9 @@ import {
   faGear,
   faSignOut
 } from "@fortawesome/free-solid-svg-icons";
+
 import styles from "./Header.module.scss";
+import config from "~/config";
 import Search from "../Search";
 import TippyMoreBtn from "../Tippy/TippyMoreBtn";
 import Image from "../Image";
@@ -42,7 +44,7 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faCloudUpload} />,
       title: "Upload",
-      to: "/upload"
+      to: config.routes.upload
     }
   ];
 
@@ -77,7 +79,7 @@ function Header() {
       <div className="container">
         <div className="row align-items-center">
           {/* Left header */}
-          <a href="/" className={`col-2 ${cx("left-header")}`}>
+          <a href={config.routes.home} className={`col-2 ${cx("left-header")}`}>
             <img
               className={cx("home-icon")}
               src="https://cdn-icons-png.flaticon.com/512/10026/10026257.png"
@@ -94,10 +96,10 @@ function Header() {
 
           {/* Right header */}
           <div className={`col-2 ${cx("right-header")}`}>
-            {currentUSer ? ( //Đã login
+            {!currentUSer ? ( //Đã login
               <>
                 {/* Avatar */}
-                <a href="/upload">
+                <a href={config.routes.upload}>
                   <Image
                     className={cx("profile-icon")}
                     src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"

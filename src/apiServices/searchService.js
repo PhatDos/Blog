@@ -1,4 +1,4 @@
-import request from "~/utils/request";
+import * as request from "~/utils/httpRequest";
 
 async function searchService(query, signal) {
   try {
@@ -9,6 +9,7 @@ async function searchService(query, signal) {
 
     return res.data;
   } catch (err) {
+    if (err.name === "CanceledError") return;
     console.error("Failed to fetch search results", err);
     throw err;
   }

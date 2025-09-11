@@ -68,15 +68,17 @@
     margin: 10px;
     object-fit: cover;
     border-radius: 50%;
+    user-select: none; // chặn select
   }
 
   .more-icon {
     color: #fff;
-    cursor: pointer; // con trỏ khi hover
+    cursor: pointer;
     margin-left: 2rem;
     padding: 4px 10px;
     height: 33px; //size icon
     width: auto;
+    user-select: none;
   }
 }
 

@@ -6,7 +6,7 @@ import { faSpinner, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./Search.module.scss";
 import useSearch from "~/hooks/useSearch";
-import TippySearch from "~/components/Layouts/components/Tippy/TippySearch";
+import TippySearch from "~/layouts/components/Tippy/TippySearch";
 
 const cx = classNames.bind(styles);
 
@@ -53,6 +53,11 @@ function Search() {
     setShowResult(false);
   };
 
+  const handleChange = (e) => {
+    const searchValue = e.target.value;
+    if (!searchValue.startsWith(" ")) setQuery(searchValue);
+  };
+
   return (
     <TippySearch
       results={searchResults}
@@ -69,7 +74,7 @@ function Search() {
         <input
           value={query}
           ref={searchRef}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleChange}
           onFocus={() => setShowResult(true)}
           type="text"
           placeholder="Search..."
@@ -93,7 +98,11 @@ function Search() {
           />
         )}
 
-        <button type="submit" className={cx("searchButton")}>
+        <button
+          type="submit"
+          className={cx("searchButton")}
+          onMouseDown={(e) => e.preventDefault()}
+        >
           <i className="fa fa-search"></i>
         </button>
       </form>

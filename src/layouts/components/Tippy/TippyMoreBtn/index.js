@@ -7,7 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const cx = classNames.bind(styles);
 
-function TippySearch({ children, moreItems, onChange = () => {} }) {
+function TippySearch({
+  children,
+  moreItems,
+  onChange = () => {},
+  hideOnClick = false
+}) {
   let width = 230;
   const [history, setHistory] = useState([{ data: moreItems }]);
   const current = history[history.length - 1];
@@ -49,6 +54,7 @@ function TippySearch({ children, moreItems, onChange = () => {} }) {
     <Tippy
       placement="bottom-start"
       //visible={true}
+      hideOnClick={hideOnClick}
       delay={[0, 400]}
       offset={[11, 10]}
       interactive={true}

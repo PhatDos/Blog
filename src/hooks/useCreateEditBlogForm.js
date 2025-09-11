@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import blogService from "~/services/blogService";
 import { useNavigate, useParams } from "react-router-dom";
+
+import config from "~/config";
+import blogService from "~/apiServices/blogService";
 
 function useCreateEditBlogForm(onSuccess) {
   const { getBlogById, createBlog, updateBlog } = blogService;
@@ -38,6 +40,7 @@ function useCreateEditBlogForm(onSuccess) {
         alert(err.message);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   // cleanup preview pic
@@ -122,7 +125,7 @@ function useCreateEditBlogForm(onSuccess) {
       console.log("Submit data:", [...formDataObj.entries()]);
 
       if (onSuccess) onSuccess(data);
-      navigate("/");
+      navigate(config.routes.home);
     } catch (err) {
       alert(err.message);
     } finally {

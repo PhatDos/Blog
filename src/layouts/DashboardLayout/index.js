@@ -1,5 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
+
 import "./DashboardLayout.scss";
+import config from "~/config";
 import Overview from "~/pages/Dashboard/overview.js";
 import BlogsTable from "~/pages/Dashboard/blogTable/index.js";
 import About from "~/pages/Dashboard/aboutUs/index.js";
@@ -11,19 +13,27 @@ function DashboardLayout() {
       <aside className="dashboard__sidebar">
         <h2 className="logo">Hello Admin</h2>
         <nav>
-          <Link to="/dashboard">Overview</Link>
-          <Link to="/dashboard/blogs">Blogs</Link>
-          <Link to="/dashboard/about-us">About Us</Link>
+          <Link to={config.routes.dashboardRoot}>Overview</Link>
+          <Link to={config.routes.dashboardBlogs}>Blogs</Link>
+          <Link to={config.routes.dashboardAbout}>About Us</Link>
         </nav>
       </aside>
 
       {/* Content */}
 
       <Routes>
-        {/* Chú ý: chỉ để path="" hoặc "blogs" */}
-        <Route path="" element={<Overview />} />
-        <Route path="blogs" element={<BlogsTable />} />
-        <Route path="about-us" element={<About />} />
+        <Route
+          path={config.routes.dashboardChildren.overview}
+          element={<Overview />}
+        />
+        <Route
+          path={config.routes.dashboardChildren.blogs}
+          element={<BlogsTable />}
+        />
+        <Route
+          path={config.routes.dashboardChildren.about}
+          element={<About />}
+        />
       </Routes>
     </div>
   );
