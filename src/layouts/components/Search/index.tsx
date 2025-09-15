@@ -6,17 +6,17 @@ import { faSpinner, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./Search.module.scss";
 import useSearch from "~/hooks/useSearch";
-import TippySearch from "~/layouts/components/Tippy/TippySearch";
+import TippySearch, { SearchItem } from "~/layouts/components/Tippy/TippySearch";
 
 const cx = classNames.bind(styles);
 
 function Search() {
   const navigate = useNavigate();
 
-  const formRef = useRef();
-  const searchRef = useRef();
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
-  const [formWidth, setFormWidth] = useState();
+  const [ formWidth, setFormWidth ] = useState<number | undefined>();
 
   const {
     query,
@@ -28,16 +28,19 @@ function Search() {
     setShowResult
   } = useSearch();
 
+  // Cập nhật width của form khi resize
   useEffect(() => {
     const updateWidth = () => {
-      setFormWidth(formRef.current?.offsetWidth);
+      if (formRef.current) {
+        setFormWidth(formRef.current.offsetWidth);
+      }
     };
-    updateWidth(); //chay lan dau
+    updateWidth(); // chạy lần đầu
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
-  }, []); //Set width of search
+  }, []);
 
-  const handleSelect = (id) => {
+  const handleSelect = (id: string | number) => {
     navigate(`/upload/${id}`);
     setQuery("");
     setSearchResults([]);
@@ -46,21 +49,21 @@ function Search() {
   const handleClear = () => {
     setQuery("");
     setSearchResults([]);
-    searchRef.current.focus();
+    searchRef.current?.focus();
   };
 
   const handleHideResult = () => {
     setShowResult(false);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value;
     if (!searchValue.startsWith(" ")) setQuery(searchValue);
   };
 
   return (
     <TippySearch
-      results={searchResults}
+      results={searchResults as SearchItem[]}
       onSelect={handleSelect}
       width={formWidth}
       onClickOutside={handleHideResult}

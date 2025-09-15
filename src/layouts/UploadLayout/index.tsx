@@ -1,7 +1,12 @@
+import { ReactNode } from "react";
 import Header from "~/layouts/components/Header";
 import Footer from "~/layouts/components/Footer";
 
-function UploadLayout({ children }) {
+interface UploadLayoutProps {
+  children: ReactNode;
+}
+
+function UploadLayout({ children }: UploadLayoutProps) {
   return (
     <div>
       <Header />

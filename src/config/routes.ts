@@ -1,4 +1,21 @@
-const routes = {
+interface DashboardChildren {
+  overview: string;
+  blogs: string;
+  about: string;
+}
+
+interface Routes {
+  home: string;
+  upload: string;
+  uploadDelete: string;
+  dashboard: string;
+  dashboardRoot: string;
+  dashboardBlogs: string;
+  dashboardAbout: string;
+  dashboardChildren: DashboardChildren;
+}
+
+const routes: Routes = {
   home: "/",
   upload: "/upload", // create Blog
   uploadDelete: "/upload/:id", // delete Blog
@@ -11,8 +28,8 @@ const routes = {
   dashboardChildren: {
     overview: "",
     blogs: "blogs",
-    about: "about-us"
-  }
+    about: "about-us",
+  },
 };
 
 export default routes;

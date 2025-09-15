@@ -1,12 +1,13 @@
+import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 
 import "./DashboardLayout.scss";
 import config from "~/config";
-import Overview from "~/pages/Dashboard/overview.js";
-import BlogsTable from "~/pages/Dashboard/blogTable/index.js";
-import About from "~/pages/Dashboard/aboutUs/index.js";
+import Overview from "~/pages/Dashboard/overview";
+import BlogsTable from "~/pages/Dashboard/blogTable";
+import About from "~/pages/Dashboard/aboutUs";
 
-function DashboardLayout() {
+const DashboardLayout: React.FC = () => {
   return (
     <div className="dashboard">
       {/* Sidebar */}
@@ -20,7 +21,6 @@ function DashboardLayout() {
       </aside>
 
       {/* Content */}
-
       <Routes>
         <Route
           path={config.routes.dashboardChildren.overview}
@@ -37,6 +37,6 @@ function DashboardLayout() {
       </Routes>
     </div>
   );
-}
+};
 
 export default DashboardLayout;

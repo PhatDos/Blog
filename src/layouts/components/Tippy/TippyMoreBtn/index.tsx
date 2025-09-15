@@ -1,24 +1,47 @@
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import styles from "./TippyMoreBtn.module.scss";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const cx = classNames.bind(styles);
 
-function TippySearch({
+// Định nghĩa type cho menu item
+type MenuItem = {
+  icon?: ReactNode,
+  title: string,
+  to?: string,
+  separate?: boolean,
+  code?: string,
+  children?: {
+    title: string,
+    data: MenuItem[],
+  },
+};
+
+// Props cho component
+interface TippyMoreBtnProps {
+  children: ReactElement;
+  moreItems: MenuItem[];
+  onChange?: (item: MenuItem) => void;
+  hideOnClick?: boolean;
+}
+
+function TippyMoreBtn({
   children,
   moreItems,
-  onChange = () => {},
-  hideOnClick = false
-}) {
-  let width = 230;
-  const [history, setHistory] = useState([{ data: moreItems }]);
-  const current = history[history.length - 1];
+  onChange = () => { },
+  hideOnClick = false,
+}: TippyMoreBtnProps) {
+  const width = 230;
+  const [ history, setHistory ] = useState<{ data: MenuItem[] }[]>([
+    { data: moreItems },
+  ]);
+  const current = history[ history.length - 1 ];
 
-  //render
-  const renderItems = (items) => {
+  // render danh sách items
+  const renderItems = (items: MenuItem[]) => {
     return items.map((item) => {
       const isParent = !!item.children;
 
@@ -36,8 +59,8 @@ function TippySearch({
           key={item.title}
           className={cx("menu-item", { separate: item.separate })}
           onClick={() => {
-            if (isParent) {
-              setHistory((prev) => [...prev, item.children]);
+            if (isParent && item.children) {
+              setHistory((prev) => [ ...prev, item.children! ]);
             } else {
               onChange(item);
             }
@@ -53,27 +76,26 @@ function TippySearch({
   return (
     <Tippy
       placement="bottom-start"
-      //visible={true}
       hideOnClick={hideOnClick}
-      delay={[0, 400]}
-      offset={[11, 10]}
+      delay={[ 0, 400 ]}
+      offset={[ 11, 10 ]}
       interactive={true}
       onHidden={() => setHistory((prev) => prev.slice(0, 1))}
       render={(attrs) => (
         <div
           className={cx("more-items")}
-          tabIndex="-1"
+          tabIndex={-1}
           {...attrs}
           style={{ width: width || "auto" }}
         >
           {/* Header */}
           {history.length > 1 && (
             <header className={cx("header")}>
-              <button //Button back
+              <button
                 className={cx("btn-back")}
-                onClick={() => {
-                  setHistory((prev) => prev.slice(0, prev.length - 1)); //xoa phan tu cuoi va tra ve mang moi
-                }}
+                onClick={() =>
+                  setHistory((prev) => prev.slice(0, prev.length - 1))
+                }
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
@@ -81,7 +103,7 @@ function TippySearch({
             </header>
           )}
           {/* Render */}
-          {renderItems(current.data)}
+          <div className={cx("menu-scroll")}>{renderItems(current.data)}</div>
         </div>
       )}
     >
@@ -90,4 +112,4 @@ function TippySearch({
   );
 }
 
-export default TippySearch;
+export default TippyMoreBtn;

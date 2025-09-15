@@ -3,18 +3,20 @@ import axios from "axios";
 const request = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
+  timeout: 10000,
 });
 
 const requestV2 = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL_2,
   headers: {
-    "Content-Type": "multipart/form-data"
-  }
+    "Content-Type": "multipart/form-data",
+  },
+  timeout: 10000,
 });
 
-//V11111111111111
+//V1
 export const get = async (path, option = {}) => {
   const response = await request.get(path, option);
   return response.data;
@@ -35,7 +37,7 @@ export const patch = async (path, data = {}, option = {}) => {
   return response.data;
 };
 
-//V2222222222222
+//V2
 export const postV2 = async (path, data = {}, option = {}) => {
   const response = await requestV2.post(path, data, option);
   return response.data;

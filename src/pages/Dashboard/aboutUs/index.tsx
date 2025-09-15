@@ -1,9 +1,10 @@
+import React from "react";
 import classNames from "classnames/bind";
 import styles from "./aboutUs.module.scss";
 
 const cx = classNames.bind(styles);
 
-function About() {
+const About: React.FC = () => {
   return (
     <div className={cx("about-container")}>
       <h1>About Us</h1>
@@ -54,6 +55,6 @@ function About() {
       </section>
     </div>
   );
-}
+};
 
 export default About;

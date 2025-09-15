@@ -9,8 +9,9 @@ import {
   faCloudUpload,
   faMessage,
   faGear,
-  faSignOut
+  faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
+import { ReactNode } from "react";
 
 import styles from "./Header.module.scss";
 import config from "~/config";
@@ -20,59 +21,69 @@ import Image from "../Image";
 
 const cx = classNames.bind(styles);
 
+// ==== Types ====
+type MenuItem = {
+  icon?: ReactNode,
+  title: string,
+  to?: string,
+  separate?: boolean,
+  code?: string,
+  children?: {
+    title: string,
+    data: MenuItem[],
+  },
+};
+
 function Header() {
-  const moreItems = [
+  const moreItems: MenuItem[] = [
     {
       icon: <FontAwesomeIcon icon={faEarthAsia} />,
       title: "English",
       children: {
         title: "Language",
         data: [
-          {
-            code: "en",
-            title: "English"
-          },
-          { code: "vi", title: "Tiếng Việt" }
-        ]
-      }
+          { code: "en", title: "English" },
+          { code: "vi", title: "Tiếng Việt" },
+        ],
+      },
     },
     {
       icon: <FontAwesomeIcon icon={faCircleQuestion} />,
       title: "Feedback and help",
-      to: "/feedback"
+      to: "/feedback",
     },
     {
       icon: <FontAwesomeIcon icon={faCloudUpload} />,
       title: "Upload",
-      to: config.routes.upload
-    }
+      to: config.routes.upload,
+    },
   ];
 
-  const userMenu = [
+  const userMenu: MenuItem[] = [
     ...moreItems,
     {
       icon: <FontAwesomeIcon icon={faMessage} />,
       title: "Messages",
-      to: "/messages"
+      to: "/messages",
     },
     {
       icon: <FontAwesomeIcon icon={faGear} />,
       title: "Settings",
-      to: "/settings"
+      to: "/settings",
     },
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: "Log out",
       to: "/logout",
-      separate: true
-    }
+      separate: true,
+    },
   ];
 
-  const handleMenuChange = (menuItem) => {
+  const handleMenuChange = (menuItem: MenuItem) => {
     console.log(menuItem);
   };
 
-  let currentUSer = false;
+  let currentUser: boolean = false;
 
   return (
     <header className={cx("wrapper")}>
@@ -80,11 +91,7 @@ function Header() {
         <div className="row align-items-center">
           {/* Left header */}
           <a href={config.routes.home} className={`col-2 ${cx("left-header")}`}>
-            <img
-              className={cx("home-icon")}
-              src="https://cdn-icons-png.flaticon.com/512/10026/10026257.png"
-              alt="Home"
-            />
+            <img className={cx("home-icon")} src="/favicon.ico" alt="Home" />
           </a>
 
           {/* Searchbar */}
@@ -96,7 +103,7 @@ function Header() {
 
           {/* Right header */}
           <div className={`col-2 ${cx("right-header")}`}>
-            {!currentUSer ? ( //Đã login
+            {!currentUser ? (
               <>
                 {/* Avatar */}
                 <a href={config.routes.upload}>
@@ -104,7 +111,6 @@ function Header() {
                     className={cx("profile-icon")}
                     src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
                     alt="Profile"
-                    //fallback=""   nếu ảnh lỗi thì thay bằng ảnh này
                   />
                 </a>
                 {/* More-btn */}
@@ -116,16 +122,15 @@ function Header() {
                 </TippyMoreBtn>
               </>
             ) : (
-              //Chưa login
               <>
                 {/* Upload */}
-                <Tippy offset={[0, 0]} content="Upload blog" placement="bottom">
+                <Tippy offset={[ 0, 0 ]} content="Upload blog" placement="bottom">
                   <button className={cx("header-btn")}>
                     <FontAwesomeIcon icon={faCloudUpload} />
                   </button>
                 </Tippy>
                 {/* Message */}
-                <Tippy offset={[0, 1]} content="Message" placement="bottom">
+                <Tippy offset={[ 0, 1 ]} content="Message" placement="bottom">
                   <button className={cx("header-btn")}>
                     <FontAwesomeIcon icon={faMessage} />
                     <span className={cx("badge")}>3</span>

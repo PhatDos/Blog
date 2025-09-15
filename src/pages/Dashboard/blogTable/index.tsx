@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useBlogsQuery } from "~/hooks/useBlogsQuery";
 import "./blogsTable.scss";
-import { useBlogs } from "~/hooks/useBlogs";
 
 const BlogsTable = () => {
-  const { blogs, loading, deleteBlog } = useBlogs(1, 30);
+  const { blogs, loading, deleteBlog } = useBlogsQuery(1, 30);
   const navigate = useNavigate();
 
-  //Go to top
-  const [goToTop, setGoToTop] = useState(false);
+  const [ goToTop, setGoToTop ] = useState(false);
   useEffect(() => {
     const handleScroll = () => setGoToTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       await deleteBlog(id);
-      alert("Blog deleted successfully!!!");
+      alert("Blog deleted successfully!");
     }
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = (id: string) => {
     navigate(`/upload/${id}`);
   };
 
@@ -31,7 +30,7 @@ const BlogsTable = () => {
   return (
     <div className="blogs-table">
       <h2>Blogs</h2>
-      <table border="1" cellPadding="8" cellSpacing="0" width="100%">
+      <table border={1} cellPadding={8} cellSpacing={0} width="100%">
         <thead>
           <tr>
             <th>Thumbnail</th>
@@ -49,8 +48,8 @@ const BlogsTable = () => {
                 <img
                   src={blog.thumbnail_url}
                   alt={blog.title}
-                  width="80"
-                  style={{ borderRadius: "6px" }}
+                  width={80}
+                  style={{ borderRadius: 6 }}
                 />
               </td>
               <td>{blog.title}</td>
@@ -60,8 +59,8 @@ const BlogsTable = () => {
               <td>
                 <button onClick={() => handleEdit(blog.id)}>Edit</button>{" "}
                 <button
-                  onClick={() => handleDelete(blog.id)}
                   style={{ color: "white", background: "red" }}
+                  onClick={() => handleDelete(blog.id)}
                 >
                   Delete
                 </button>
@@ -76,10 +75,7 @@ const BlogsTable = () => {
           className="go-to-top"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <img
-            src="https://www.pngkey.com/png/detail/355-3553692_jump-to-the-top-scroll-to-top-icon.png"
-            alt="▲"
-          />
+          ▲
         </button>
       )}
     </div>

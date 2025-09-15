@@ -4,7 +4,13 @@ import useCreateEditBlogForm from "~/hooks/useCreateEditBlogForm";
 
 const cx = classNames.bind(styles);
 
-function CreateEditBlogForm({ onSuccess }) {
+interface CreateEditBlogFormProps {
+  onSuccess?: (data: any) => void;
+}
+
+const CreateEditBlogForm: React.FC<CreateEditBlogFormProps> = ({
+  onSuccess,
+}) => {
   const {
     id,
     formData,
@@ -13,8 +19,8 @@ function CreateEditBlogForm({ onSuccess }) {
     previewUrl,
     handleChange,
     handleFileChange,
-    handleSubmit
-  } = useCreateEditBlogForm(onSuccess);
+    handleSubmit,
+  } = useCreateEditBlogForm({ onSuccess });
 
   return (
     <form className={cx("blog-form")} onSubmit={handleSubmit}>
@@ -92,7 +98,7 @@ function CreateEditBlogForm({ onSuccess }) {
             style={{
               maxWidth: "300px",
               borderRadius: "8px",
-              marginTop: "10px"
+              marginTop: "10px",
             }}
           />
         </div>
@@ -113,6 +119,6 @@ function CreateEditBlogForm({ onSuccess }) {
       </button>
     </form>
   );
-}
+};
 
 export default CreateEditBlogForm;

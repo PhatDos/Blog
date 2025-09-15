@@ -1,10 +1,9 @@
 import React from "react";
-
 import {
   FaUsers,
   FaChartLine,
   FaShoppingCart,
-  FaDollarSign
+  FaDollarSign,
 } from "react-icons/fa";
 import { Line, Bar } from "react-chartjs-2";
 import {
@@ -16,9 +15,11 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  BarElement
+  BarElement,
+  ChartData,
 } from "chart.js";
 
+// Register chart.js components
 ChartJS.register(
   Title,
   Tooltip,
@@ -30,35 +31,67 @@ ChartJS.register(
   BarElement
 );
 
-const Overview = () => {
-  const lineData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+// ==== Types ====
+type Order = {
+  id: number;
+  customer: string;
+  total: string;
+  status: "Completed" | "Pending" | "Cancelled";
+};
+
+// type cho icon (fix lỗi JSX)
+type IconComponent = React.ComponentType<
+  React.SVGProps<SVGSVGElement> & { size?: string | number }
+>;
+
+// Reusable stats card
+const StatsCard = ({
+  Icon,
+  value,
+  label,
+}: {
+  Icon: IconComponent;
+  value: string | number;
+  label: string;
+}) => (
+  <div className="card">
+    <Icon size={24} />
+    <div>
+      <h3>{value}</h3>
+      <p>{label}</p>
+    </div>
+  </div>
+);
+
+const Overview: React.FC = () => {
+  const lineData: ChartData<"line"> = {
+    labels: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun" ],
     datasets: [
       {
         label: "Revenue",
-        data: [1200, 1900, 3000, 2500, 3200, 4000],
+        data: [ 1200, 1900, 3000, 2500, 3200, 4000 ],
         borderColor: "#4cafef",
-        backgroundColor: "rgba(76,175,239,0.2)"
-      }
-    ]
+        backgroundColor: "rgba(76,175,239,0.2)",
+      },
+    ],
   };
 
-  const barData = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  const barData: ChartData<"bar"> = {
+    labels: [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ],
     datasets: [
       {
         label: "Orders",
-        data: [30, 45, 60, 40, 80, 90, 50],
-        backgroundColor: "#ff9800"
-      }
-    ]
+        data: [ 30, 45, 60, 40, 80, 90, 50 ],
+        backgroundColor: "#ff9800",
+      },
+    ],
   };
 
-  const orders = [
+  const orders: Order[] = [
     { id: 1, customer: "John Doe", total: "$120", status: "Completed" },
     { id: 2, customer: "Jane Smith", total: "$90", status: "Pending" },
     { id: 3, customer: "Sam Wilson", total: "$200", status: "Completed" },
-    { id: 4, customer: "Lisa Wong", total: "$150", status: "Cancelled" }
+    { id: 4, customer: "Lisa Wong", total: "$150", status: "Cancelled" },
   ];
 
   return (
@@ -71,34 +104,22 @@ const Overview = () => {
 
       {/* Stats Cards */}
       <section className="dashboard__stats">
-        <div className="card">
-          <FaUsers />
-          <div>
-            <h3>1,230</h3>
-            <p>Users</p>
-          </div>
-        </div>
-        <div className="card">
-          <FaShoppingCart />
-          <div>
-            <h3>320</h3>
-            <p>Orders</p>
-          </div>
-        </div>
-        <div className="card">
-          <FaDollarSign />
-          <div>
-            <h3>$5,430</h3>
-            <p>Revenue</p>
-          </div>
-        </div>
-        <div className="card">
-          <FaChartLine />
-          <div>
-            <h3>+12%</h3>
-            <p>Growth</p>
-          </div>
-        </div>
+        <StatsCard Icon={FaUsers as IconComponent} value="1,230" label="Users" />
+        <StatsCard
+          Icon={FaShoppingCart as IconComponent}
+          value="320"
+          label="Orders"
+        />
+        <StatsCard
+          Icon={FaDollarSign as IconComponent}
+          value="$5,430"
+          label="Revenue"
+        />
+        <StatsCard
+          Icon={FaChartLine as IconComponent}
+          value="+12%"
+          label="Growth"
+        />
       </section>
 
       {/* Charts */}

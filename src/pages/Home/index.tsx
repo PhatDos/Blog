@@ -1,35 +1,36 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
-import { useBlogs } from "~/hooks/useBlogs";
+import { useBlogsQuery } from "~/hooks/useBlogsQuery";
+import { Blog } from "~/types/Blog";
 
 const cx = classNames.bind(styles);
 
 function Home() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [ searchParams, setSearchParams ] = useSearchParams();
   const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
-  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const [ currentPage, setCurrentPage ] = useState<number>(pageFromUrl);
 
   const navigate = useNavigate();
 
-  const { blogs, totalPages, loading } = useBlogs(currentPage);
+  const { blogs, totalPages, loading } = useBlogsQuery(currentPage, 12);
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    setSearchParams({ page: pageNumber });
+    setSearchParams({ page: pageNumber.toString() });
   };
 
   useEffect(() => {
     setCurrentPage(pageFromUrl);
-  }, [pageFromUrl]);
+  }, [ pageFromUrl ]);
 
   return (
     <div>
       {loading && <div className={cx("loading")}>Loading...</div>}
 
       <div className={cx("blog-list")}>
-        {blogs.map((blog, index) => {
+        {blogs.map((blog: Blog, index: number) => {
           const date = blog.published_at || blog.created_at || "";
           const formattedDate = date
             ? new Date(date).toLocaleDateString("vi-VN")
@@ -55,9 +56,6 @@ function Home() {
                     By {blog.author || "Unknown"}
                   </span>
                   <span className={cx("date")}>{formattedDate}</span>
-                </div>
-                <div className={cx("post-meta")}>
-                  <span className={cx("read-time")}>{blog.readTime || ""}</span>
                 </div>
                 <p className={cx("summary")}>{blog.summary}</p>
               </div>

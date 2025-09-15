@@ -26,6 +26,13 @@
       margin-top: 5px;
     }
   }
+
+  .menu-scroll {
+    overflow-y: auto;
+    max-height: 200px;
+    scrollbar-color: rgb(208, 203, 203) rgb(255, 255, 255);
+    scrollbar-width: thin;
+  }
 }
 
 a.menu-item {

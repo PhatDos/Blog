@@ -1,8 +1,26 @@
+import { ReactElement, ReactNode } from "react";
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
 import styles from "./TippySearch.module.scss";
 
 const cx = classNames.bind(styles);
+
+// Kiểu dữ liệu của 1 item trong search
+export interface SearchItem {
+  id: string | number;
+  title: string;
+  summary: string;
+  thumbnail_url: string;
+}
+
+interface TippySearchProps {
+  children: ReactElement;
+  results: SearchItem[];
+  onSelect: (id: string | number) => void;
+  width?: string | number;
+  visible: boolean;
+  onClickOutside: () => void;
+}
 
 function TippySearch({
   children,
@@ -10,19 +28,19 @@ function TippySearch({
   onSelect,
   width,
   visible,
-  onClickOutside
-}) {
+  onClickOutside,
+}: TippySearchProps) {
   return (
     <Tippy
       placement="bottom-start"
       visible={visible}
-      offset={[0, 2]}
+      offset={[ 0, 2 ]}
       interactive={true}
       onClickOutside={onClickOutside}
       render={(attrs) => (
         <div
           className={cx("search-result")}
-          tabIndex="-1"
+          tabIndex={-1}
           {...attrs}
           style={{ width: width || "auto" }}
         >

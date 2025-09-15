@@ -1,3 +1,4 @@
+import { FC, ReactNode } from "react";
 import Header from "~/layouts/components/Header";
 import Footer from "~/layouts/components/Footer";
 import Sidebar from "./Sidebar";
@@ -6,7 +7,12 @@ import styles from "./DefaultLayout.module.scss";
 
 const cx = classNames.bind(styles);
 
-function DefaultLayout({ children }) {
+// Định nghĩa props
+interface DefaultLayoutProps {
+  children: ReactNode;
+}
+
+const DefaultLayout: FC<DefaultLayoutProps> = ({ children }) => {
   return (
     <div className={cx("default-layout")}>
       <Header />
@@ -23,6 +29,6 @@ function DefaultLayout({ children }) {
       <Footer />
     </div>
   );
-}
+};
 
 export default DefaultLayout;
