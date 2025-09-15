@@ -52,9 +52,6 @@ function Home() {
               <div className={cx("post-content")}>
                 <h2 className={cx("post-title")}>{blog.title}</h2>
                 <div className={cx("post-meta")}>
-                  <span className={cx("author")}>
-                    By {blog.author || "Unknown"}
-                  </span>
                   <span className={cx("date")}>{formattedDate}</span>
                 </div>
                 <p className={cx("summary")}>{blog.summary}</p>

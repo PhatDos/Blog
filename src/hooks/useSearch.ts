@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import searchService from "../services/searchService";
 import useDebounce from "./useDebounce";
-
-type SearchResultItem = {
-  // định nghĩa theo dữ liệu trả về từ searchService
-  id: string;
-  title: string;
-  [key: string]: any;
-};
+import { SearchResultItem } from "../types/Search";
 
 function useSearch() {
   const [query, setQuery] = useState<string>("");
@@ -28,31 +22,21 @@ function useSearch() {
 
     const fetchAPI = async () => {
       try {
-        const res = await searchService(debouncedQuery, controller.signal);
-        if (res) setSearchResults(res.items);
-      } catch (err) {
-        if ((err as any).name !== "AbortError") {
-          console.error(err);
-        }
+        const data = await searchService(debouncedQuery, controller.signal);
+        setSearchResults(data?.items ?? []);
+      } catch (err: any) {
+        if (err.name !== "AbortError") console.error(err);
+        setSearchResults([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchAPI();
-
     return () => controller.abort();
   }, [debouncedQuery]);
 
-  return {
-    query,
-    setQuery,
-    searchResults,
-    setSearchResults,
-    loading,
-    showResult,
-    setShowResult,
-  };
+  return { query, setQuery, searchResults, setSearchResults, loading, showResult, setShowResult };
 }
 
 export default useSearch;

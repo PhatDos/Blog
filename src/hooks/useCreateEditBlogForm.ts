@@ -44,12 +44,14 @@ function useCreateEditBlogForm({ onSuccess }: UseCreateEditBlogFormProps) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
 
-  // fetch nếu có id
+  // Fetch blog if editing
   useEffect(() => {
     if (!id) return;
-    (async () => {
+
+    const fetchBlog = async () => {
       try {
-        const data = await getBlogById(id);
+        const res = await getBlogById(id);
+        const data = res.data; // blogService.getBlogById trả về { data: Blog }
         setFormData({
           title: data.title || "",
           slug: data.slug || "",
@@ -61,18 +63,21 @@ function useCreateEditBlogForm({ onSuccess }: UseCreateEditBlogFormProps) {
       } catch (err: any) {
         alert(err.message);
       }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    };
 
-  // cleanup preview pic
+    fetchBlog();
+  }, [id, getBlogById]);
+
+  // Cleanup preview URL
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -126,18 +131,20 @@ function useCreateEditBlogForm({ onSuccess }: UseCreateEditBlogFormProps) {
         formDataObj.append("thumbnail_url", formData.thumbnail_url);
       }
 
-      let data;
+      let resData;
       if (id) {
-        data = file ? await updateBlog(id, formDataObj) : await updateBlog(id, formData);
+        resData = file
+          ? await updateBlog(id, formDataObj)
+          : await updateBlog(id, formData);
         alert("Blog updated successfully!");
       } else {
-        data = file ? await createBlog(formDataObj) : await createBlog(formData);
+        resData = file ? await createBlog(formDataObj) : await createBlog(formData);
         alert("Blog created successfully!");
       }
 
       console.log("Submit data:", file ? [...formDataObj.entries()] : formData);
 
-      if (onSuccess) onSuccess(data);
+      if (onSuccess) onSuccess(resData);
       navigate(config.routes.home);
     } catch (err: any) {
       alert(err.message);

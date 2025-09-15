@@ -1,21 +1,19 @@
 import classNames from "classnames/bind";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
-import styles from "./Search.module.scss";
 import useSearch from "~/hooks/useSearch";
+import styles from "./Search.module.scss";
 import TippySearch, { SearchItem } from "~/layouts/components/Tippy/TippySearch";
 
 const cx = classNames.bind(styles);
 
 function Search() {
   const navigate = useNavigate();
-
   const formRef = useRef<HTMLFormElement | null>(null);
   const searchRef = useRef<HTMLInputElement | null>(null);
-
   const [ formWidth, setFormWidth ] = useState<number | undefined>();
 
   const {
@@ -25,17 +23,15 @@ function Search() {
     setSearchResults,
     loading,
     showResult,
-    setShowResult
+    setShowResult,
   } = useSearch();
 
   // Cập nhật width của form khi resize
   useEffect(() => {
     const updateWidth = () => {
-      if (formRef.current) {
-        setFormWidth(formRef.current.offsetWidth);
-      }
+      if (formRef.current) setFormWidth(formRef.current.offsetWidth);
     };
-    updateWidth(); // chạy lần đầu
+    updateWidth();
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
@@ -52,13 +48,11 @@ function Search() {
     searchRef.current?.focus();
   };
 
-  const handleHideResult = () => {
-    setShowResult(false);
-  };
+  const handleHideResult = () => setShowResult(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchValue = e.target.value;
-    if (!searchValue.startsWith(" ")) setQuery(searchValue);
+    const value = e.target.value;
+    if (!value.startsWith(" ")) setQuery(value);
   };
 
   return (
@@ -66,8 +60,8 @@ function Search() {
       results={searchResults as SearchItem[]}
       onSelect={handleSelect}
       width={formWidth}
-      onClickOutside={handleHideResult}
       visible={showResult && searchResults.length > 0}
+      onClickOutside={handleHideResult}
     >
       <form
         className={cx("searchForm")}
@@ -81,10 +75,10 @@ function Search() {
           onFocus={() => setShowResult(true)}
           type="text"
           placeholder="Search..."
-          name="search"
           className={cx("searchInput")}
           spellCheck={false}
         />
+
         {loading && (
           <FontAwesomeIcon
             icon={faSpinner}

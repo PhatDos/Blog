@@ -11,7 +11,7 @@ function ThemeProvider({ children }) {
 
   const value = {
     theme,
-    toggleTheme
+    toggleTheme,
   };
 
   return <ThemeCt.Provider value={value}>{children}</ThemeCt.Provider>;
