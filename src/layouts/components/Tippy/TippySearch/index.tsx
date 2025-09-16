@@ -30,6 +30,26 @@ function TippySearch({
   visible,
   onClickOutside,
 }: TippySearchProps) {
+
+  const renderResult = (items: SearchItem[]) =>
+    items.map((item) => (
+      <div
+        key={item.id}
+        className={cx("search-item")}
+        onClick={() => onSelect(item.id)}
+      >
+        <img
+          src={item.thumbnail_url}
+          alt={item.title}
+          className={cx("thumbnail")}
+        />
+        <div className={cx("info")}>
+          <h4>{item.title}</h4>
+          <p>{item.summary}</p>
+        </div>
+      </div>
+    ));
+
   return (
     <Tippy
       placement="bottom-start"
@@ -44,23 +64,7 @@ function TippySearch({
           {...attrs}
           style={{ width: width || "auto" }}
         >
-          {results.map((item) => (
-            <div
-              key={item.id}
-              className={cx("search-item")}
-              onClick={() => onSelect(item.id)}
-            >
-              <img
-                src={item.thumbnail_url}
-                alt={item.title}
-                className={cx("thumbnail")}
-              />
-              <div className={cx("info")}>
-                <h4>{item.title}</h4>
-                <p>{item.summary}</p>
-              </div>
-            </div>
-          ))}
+          {renderResult(results)}
         </div>
       )}
     >

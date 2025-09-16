@@ -103,7 +103,7 @@ function Header() {
 
           {/* Right header */}
           <div className={`col-2 ${cx("right-header")}`}>
-            {!currentUser ? (
+            {currentUser ? (
               <>
                 {/* Avatar */}
                 <a href={config.routes.upload}>

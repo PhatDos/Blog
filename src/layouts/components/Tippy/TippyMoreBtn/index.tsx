@@ -73,6 +73,12 @@ function TippyMoreBtn({
     });
   };
 
+  const handleBack = () => {
+    setHistory((prev) => prev.slice(0, prev.length - 1))
+  }
+
+  const handleToFirstPage = () => { setHistory((prev) => prev.slice(0, 1)) }
+
   return (
     <Tippy
       placement="bottom-start"
@@ -80,7 +86,7 @@ function TippyMoreBtn({
       delay={[ 0, 400 ]}
       offset={[ 11, 10 ]}
       interactive={true}
-      onHidden={() => setHistory((prev) => prev.slice(0, 1))}
+      onHidden={handleToFirstPage}
       render={(attrs) => (
         <div
           className={cx("more-items")}
@@ -93,9 +99,7 @@ function TippyMoreBtn({
             <header className={cx("header")}>
               <button
                 className={cx("btn-back")}
-                onClick={() =>
-                  setHistory((prev) => prev.slice(0, prev.length - 1))
-                }
+                onClick={handleBack}
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>

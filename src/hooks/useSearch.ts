@@ -7,11 +7,11 @@ function useSearch() {
   const [query, setQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showResult, setShowResult] = useState<boolean>(true);
-  const debouncedQuery = useDebounce<string>(query, 500);
+  const [showResult, setShowResult] = useState<boolean>(false);
+  const debouncedValue = useDebounce<string>(query, 500);
 
   useEffect(() => {
-    if (!debouncedQuery.trim()) {
+    if (!debouncedValue.trim()) {
       setSearchResults([]);
       setLoading(false);
       return;
@@ -22,7 +22,7 @@ function useSearch() {
 
     const fetchAPI = async () => {
       try {
-        const data = await searchService(debouncedQuery, controller.signal);
+        const data = await searchService(debouncedValue, controller.signal);
         setSearchResults(data?.items ?? []);
       } catch (err: any) {
         if (err.name !== "AbortError") console.error(err);
@@ -34,7 +34,7 @@ function useSearch() {
 
     fetchAPI();
     return () => controller.abort();
-  }, [debouncedQuery]);
+  }, [debouncedValue]);
 
   return { query, setQuery, searchResults, setSearchResults, loading, showResult, setShowResult };
 }
