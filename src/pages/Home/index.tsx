@@ -3,27 +3,49 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
 import { useBlogsQuery } from "~/hooks/useBlogsQuery";
+import { useCleanQueryParams } from "~/hooks/useCleanQueryParams";
 import { Blog } from "~/types/Blog";
 
 const cx = classNames.bind(styles);
 
 function Home() {
-  const [ searchParams, setSearchParams ] = useSearchParams();
-  const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
-  const [ currentPage, setCurrentPage ] = useState<number>(pageFromUrl);
+  // --- 1. Clean các query param không cần thiết ---
+  useCleanQueryParams({
+    page: {
+      defaultValue: "1",
+      validate: (v: string) => !isNaN(Number(v)) && Number(v) >= 1,
+    },
+  });
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  // --- 2. Lấy page từ URL và đảm bảo hợp lệ ---
+  const pageFromUrlRaw = searchParams.get("page");
+  const pageFromUrl =
+    pageFromUrlRaw &&
+    !isNaN(Number(pageFromUrlRaw)) &&
+    Number(pageFromUrlRaw) >= 1
+      ? Number(pageFromUrlRaw)
+      : 1;
+
+  const [currentPage, setCurrentPage] = useState<number>(pageFromUrl);
+
+  // --- 3. Fetch blogs ---
   const { blogs, totalPages, loading } = useBlogsQuery(currentPage, 12);
 
+  // --- 4. Xử lý thay đổi trang ---
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     setSearchParams({ page: pageNumber.toString() });
   };
 
+  // --- 5. Đồng bộ currentPage khi URL thay đổi ---
   useEffect(() => {
-    setCurrentPage(pageFromUrl);
-  }, [ pageFromUrl ]);
+    if (currentPage !== pageFromUrl) {
+      setCurrentPage(pageFromUrl);
+    }
+  }, [pageFromUrl, currentPage]);
 
   return (
     <div>

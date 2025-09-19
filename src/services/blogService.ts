@@ -1,4 +1,3 @@
-// services/blogService.ts
 import * as request from "~/utils/httpRequest";
 import { ApiResponse, Blog, BlogListResponse } from "~/types/Blog";
 
