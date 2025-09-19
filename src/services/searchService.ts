@@ -1,9 +1,12 @@
-import * as request from "~/utils/httpRequest";
+import { get } from "~/utils/apiClient";
 import { SearchData, SearchResponse } from "~/types/Search";
 
-const searchService = async (query: string, signal?: AbortSignal): Promise<SearchData | undefined> => {
+const searchService = async (
+  query: string,
+  signal?: AbortSignal,
+): Promise<SearchData | undefined> => {
   try {
-    const res: SearchResponse = await request.get<SearchResponse>("/posts/search", {
+    const res = await get<SearchResponse>("/posts/search", {
       params: { params: query },
       signal,
     });
