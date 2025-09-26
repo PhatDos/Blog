@@ -1,12 +1,15 @@
 import classNames from "classnames/bind";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 import useSearch from "~/hooks/useSearch";
 import styles from "./Search.module.scss";
-import TippySearch, { SearchItem } from "~/layouts/components/Tippy/TippySearch";
+import TippySearch, {
+  SearchItem,
+} from "~/layouts/components/Tippy/TippySearch";
+import useElementWidth from "~/hooks/useElementWidth";
 
 const cx = classNames.bind(styles);
 
@@ -14,7 +17,7 @@ function Search() {
   const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement | null>(null);
   const searchRef = useRef<HTMLInputElement | null>(null);
-  const [ formWidth, setFormWidth ] = useState<number | undefined>();
+  const formWidth = useElementWidth(formRef);
 
   const {
     query,
@@ -25,16 +28,6 @@ function Search() {
     showResult,
     setShowResult,
   } = useSearch();
-
-  // Cập nhật width của form khi resize
-  useEffect(() => {
-    const updateWidth = () => {
-      if (formRef.current) setFormWidth(formRef.current.offsetWidth);
-    };
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
 
   const handleSelect = (id: string | number) => {
     navigate(`/upload/${id}`);

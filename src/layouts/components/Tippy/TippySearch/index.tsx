@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
 import styles from "./TippySearch.module.scss";
@@ -30,7 +30,6 @@ function TippySearch({
   visible,
   onClickOutside,
 }: TippySearchProps) {
-
   const renderResult = (items: SearchItem[]) =>
     items.map((item) => (
       <div
@@ -54,7 +53,7 @@ function TippySearch({
     <Tippy
       placement="bottom-start"
       visible={visible}
-      offset={[ 0, 2 ]}
+      offset={[0, 2]}
       interactive={true}
       onClickOutside={onClickOutside}
       render={(attrs) => (

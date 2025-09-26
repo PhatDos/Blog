@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { ThemeProvider } from "./ThemeContext.js";
+import { ThemeProvider } from "./ThemeContext";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "~/routes";
 import { DefaultLayout } from "~/layouts";
